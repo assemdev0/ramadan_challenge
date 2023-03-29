@@ -41,7 +41,7 @@ class NewsListItemBuilderWidget extends StatelessWidget {
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 type,
@@ -54,9 +54,10 @@ class NewsListItemBuilderWidget extends StatelessWidget {
                 title,
                 style: getBoldTextStyle(
                   color: titleTextColor,
-                  fontSize: FontSizeManager.s18,
+                  fontSize: FontSizeManager.s16,
                 ),
                 maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Row(
