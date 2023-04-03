@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/resources/strings_manager.dart';
+import '../resources/strings_manager.dart';
 
 import 'colors_manager.dart';
 

@@ -1,20 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/resources/styles_manager.dart';
+import '../resources/styles_manager.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import '/resources/strings_manager.dart';
-import '/resources/colors_manager.dart';
-import 'home_screen.dart';
+import '../resources/strings_manager.dart';
+import '../resources/colors_manager.dart';
+import '../homr_screen/home_screen.dart';
 
-class NewsScreen extends StatefulWidget {
-  const NewsScreen({Key? key}) : super(key: key);
+class HomeLayout extends StatefulWidget {
+  const HomeLayout({Key? key}) : super(key: key);
 
   @override
-  State<NewsScreen> createState() => _NewsScreenState();
+  State<HomeLayout> createState() => _HomeLayoutState();
 }
 
-class _NewsScreenState extends State<NewsScreen> {
+class _HomeLayoutState extends State<HomeLayout> {
   int currentBNAVIndex = 0;
+
   List<SalomonBottomBarItem> items = [
     SalomonBottomBarItem(
       title: Text(home, style: getMediumTextStyle(color: whiteColor)),
@@ -61,6 +62,7 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
     ),
   ];
+
   List<Widget> screens = [
     const HomeScreen(),
     Container(),
@@ -96,7 +98,7 @@ class _NewsScreenState extends State<NewsScreen> {
                     top: MediaQuery.of(context).size.height * 0.004,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: errorRedColor,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: whiteColor,

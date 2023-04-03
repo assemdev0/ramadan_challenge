@@ -28,3 +28,4 @@ Color get titleTextColor => const Color(0xFF161616);
 Color get whiteColor => const Color(0xFFFFFFFF);
 Color get errorRedColor => const Color(0xFFC5032B);
 Color get textButtonColor => const Color(0xFFE60A85EA);
+Color get transparentColor => const Color(0x00000000);

@@ -1,15 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ramadan_chanllage_1/resources/assets_manager.dart';
-import 'package:ramadan_chanllage_1/resources/font_manager.dart';
-import 'package:ramadan_chanllage_1/resources/styles_manager.dart';
+import 'package:ramadan_chanllage_1/presentation/resources/routes_manager.dart';
+import 'package:ramadan_chanllage_1/presentation/widgets/home_title_widget.dart';
+import '../../models/news_item_model.dart';
+import '/presentation/resources/assets_manager.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '/resources/strings_manager.dart';
-import '/widgets/default_padding_widget.dart';
-import '/resources/colors_manager.dart';
-import 'widgets/home_slider_widget.dart';
-import 'widgets/news_list_item_builder_widget.dart';
+import '../resources/strings_manager.dart';
+import '../widgets/default_padding_widget.dart';
+import '../resources/colors_manager.dart';
+import '../widgets/home_slider_widget.dart';
+import '../widgets/home_news_list_item_builder_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,56 +24,133 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
   // Items for the news list
-  List<ItemModel> items = [
-    ItemModel(
+  List<NewsItemModel> listItems = [
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesVolleyball,
       profileImage: ImageAssets.imagesMcKidney,
       type: sports,
       title: whatTrainingDoVolleyballPlayersNeed,
       name: mcKidney,
       date: feb27_20_23,
+      body: bodyString,
     ),
-    ItemModel(
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesSecondrySchool,
       profileImage: ImageAssets.imagesRosemary,
       type: education,
       title: secondarySchoolPlacesWhenDoParentsFindOut,
       name: rosemary,
       date: feb28_2023,
+      body: bodyString,
     ),
-    ItemModel(
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesVolleyball,
       profileImage: ImageAssets.imagesMcKidney,
       type: sports,
       title: whatTrainingDoVolleyballPlayersNeed,
       name: mcKidney,
       date: feb27_20_23,
+      body: bodyString,
     ),
-    ItemModel(
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesSecondrySchool,
       profileImage: ImageAssets.imagesRosemary,
       type: education,
       title: secondarySchoolPlacesWhenDoParentsFindOut,
       name: rosemary,
       date: feb28_2023,
+      body: bodyString,
     ),
-    ItemModel(
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesVolleyball,
       profileImage: ImageAssets.imagesMcKidney,
       type: sports,
       title: whatTrainingDoVolleyballPlayersNeed,
       name: mcKidney,
       date: feb27_20_23,
+      body: bodyString,
     ),
-    ItemModel(
+    NewsItemModel(
+      source: cnnIndonesia,
       image: ImageAssets.imagesSecondrySchool,
       profileImage: ImageAssets.imagesRosemary,
       type: education,
       title: secondarySchoolPlacesWhenDoParentsFindOut,
       name: rosemary,
       date: feb28_2023,
+      body: bodyString,
     ),
   ];
+
+  // Items for the news list
+  List<NewsItemModel> sliderItems = [
+    NewsItemModel(
+      source: cnnIndonesia,
+      image: ImageAssets.imagesRace,
+      profileImage: ImageAssets.imagesMcKidney,
+      type: sports,
+      title: alexanderWearsModifiedHelmetInRoadRaces,
+      name: mcKidney,
+      date: hoursAgo,
+      body: bodyString,
+    ),
+    NewsItemModel(
+      source: cnnIndonesia,
+      image: ImageAssets.imagesRace,
+      profileImage: ImageAssets.imagesMcKidney,
+      type: sports,
+      title: alexanderWearsModifiedHelmetInRoadRaces,
+      name: mcKidney,
+      date: hoursAgo,
+      body: bodyString,
+    ),
+    NewsItemModel(
+      source: cnnIndonesia,
+      image: ImageAssets.imagesRace,
+      profileImage: ImageAssets.imagesMcKidney,
+      type: sports,
+      title: alexanderWearsModifiedHelmetInRoadRaces,
+      name: mcKidney,
+      date: hoursAgo,
+      body: bodyString,
+    ),
+    NewsItemModel(
+      source: cnnIndonesia,
+      image: ImageAssets.imagesRace,
+      profileImage: ImageAssets.imagesMcKidney,
+      type: sports,
+      title: alexanderWearsModifiedHelmetInRoadRaces,
+      name: mcKidney,
+      date: hoursAgo,
+      body: bodyString,
+    ),
+    NewsItemModel(
+      source: cnnIndonesia,
+      image: ImageAssets.imagesRace,
+      profileImage: ImageAssets.imagesMcKidney,
+      type: sports,
+      title: alexanderWearsModifiedHelmetInRoadRaces,
+      name: mcKidney,
+      date: hoursAgo,
+      body: bodyString,
+    ),
+  ];
+
+  onIndexChange(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  onNewsItemTap(NewsItemModel item) {
+    Navigator.pushNamed(context, RoutesManager.newsDetailsScreen,
+        arguments: item);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,38 +160,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           // Breaking News Title
-          DefaultPaddingWidget(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  breakingNews,
-                  style: getBoldTextStyle(
-                    color: titleTextColor,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    viewAll,
-                    style: getMediumTextStyle(
-                      color: textButtonColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          HomeTitleWidget(viewAllPressed: () {}, text: breakingNews),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           // Slider
           HomeSliderWidget(
             carouselController: carouselController,
             onIndexChanged: (index) {
-              setState(() {
-                currentIndex = index;
-              });
+              onIndexChange(index);
             },
-            image: ImageAssets.imagesRace,
+            items: sliderItems,
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           AnimatedSmoothIndicator(
@@ -131,28 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(height: MediaQuery.of(context).size.height * 0.03),
           // Recommendation Title
-          DefaultPaddingWidget(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  recommendation,
-                  style: getBoldTextStyle(
-                    color: titleTextColor,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    viewAll,
-                    style: getMediumTextStyle(
-                      color: textButtonColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          HomeTitleWidget(viewAllPressed: () {}, text: recommendation),
           SizedBox(height: MediaQuery.of(context).size.height * 0.02),
           // List of News
           DefaultPaddingWidget(
@@ -160,40 +193,25 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
-                return NewsListItemBuilderWidget(
-                  image: items[index].image,
-                  profileImage: items[index].profileImage,
-                  type: items[index].type,
-                  title: items[index].title,
-                  name: items[index].name,
-                  date: items[index].date,
+                return HomeNewsListItemBuilderWidget(
+                  image: listItems[index].image,
+                  profileImage: listItems[index].profileImage,
+                  type: listItems[index].type,
+                  title: listItems[index].title,
+                  name: listItems[index].name,
+                  date: listItems[index].date,
+                  onTap: () {
+                    onNewsItemTap(listItems[index]);
+                  },
                 );
               },
               separatorBuilder: (BuildContext context, int index) =>
                   SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              itemCount: items.length,
+              itemCount: listItems.length,
             ),
           )
         ],
       ),
     );
   }
-}
-
-class ItemModel {
-  final String image;
-  final String profileImage;
-  final String type;
-  final String title;
-  final String name;
-  final String date;
-
-  ItemModel({
-    required this.image,
-    required this.type,
-    required this.title,
-    required this.name,
-    required this.date,
-    required this.profileImage,
-  });
 }
