@@ -14,6 +14,6 @@ class RoutesManager {
     home: (context) => const HomeLayout(),
 
     // News
-    newsDetailsScreen: (context) => const NewsDetailsScreen(),
+    newsDetailsScreen: (context) => NewsDetailsScreen(),
   };
 }

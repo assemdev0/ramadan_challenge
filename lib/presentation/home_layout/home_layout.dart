@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ramadan_chanllage_1/presentation/favorite/favorite_screen.dart';
 import '../resources/styles_manager.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import '../resources/strings_manager.dart';
@@ -40,7 +41,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       ),
     ),
     SalomonBottomBarItem(
-      title: Text(save, style: getMediumTextStyle(color: whiteColor)),
+      title: Text(favorite, style: getMediumTextStyle(color: whiteColor)),
       icon: Icon(
         CupertinoIcons.bookmark,
         color: disabledIconColor,
@@ -66,7 +67,7 @@ class _HomeLayoutState extends State<HomeLayout> {
   List<Widget> screens = [
     const HomeScreen(),
     Container(),
-    Container(),
+    const FavoriteScreen(),
     Container(),
   ];
 

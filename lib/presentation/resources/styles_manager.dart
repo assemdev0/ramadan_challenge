@@ -62,7 +62,7 @@ TextStyle getSemiBoldTextStyle({
 
 // bold style
 TextStyle getBoldTextStyle({
-  double fontSize = FontSizeManager.s30,
+  double fontSize = FontSizeManager.s28,
   required Color color,
 }) {
   return _getTextStyle(

@@ -1,78 +1,66 @@
-import 'package:blur/blur.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ramadan_chanllage_1/models/news_item_model.dart';
 
+import '../../cubit/news_cubit/news_cubit.dart';
 import '../resources/colors_manager.dart';
+import '../resources/styles_manager.dart';
+import '../widgets/default_padding_widget.dart';
+import '../widgets/sliver_app_bar_widget.dart';
 
-class NewsDetailsScreen extends StatefulWidget {
+class NewsDetailsScreen extends StatelessWidget {
   const NewsDetailsScreen({super.key});
 
   @override
-  State<NewsDetailsScreen> createState() => _NewsDetailsScreenState();
-}
-
-class _NewsDetailsScreenState extends State<NewsDetailsScreen> {
-  late NewsItemModel item;
-
-  @override
   Widget build(BuildContext context) {
-    item = ModalRoute.of(context)!.settings.arguments as NewsItemModel;
-
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: transparentColor,
-              ),
-              expandedHeight: 200.0,
-              floating: true,
-              pinned: true,
-              leading: Stack(
-                alignment: Alignment.center,
-                children: [
-                  ClipOval(
-                    child: Blur(
-                      blur: 5,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          color: transparentColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(500),
-                          ),
-                          // shape: BoxShape.circle,
-                        ),
+    NewsItemModel item =
+        ModalRoute.of(context)!.settings.arguments as NewsItemModel;
+    var cubit = BlocProvider.of<NewsCubit>(context);
+    return BlocBuilder<NewsCubit, NewsState>(
+      bloc: NewsCubit(),
+      builder: (context, state) {
+        return Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBarWidget(
+                  item: item,
+                  onBackPress: () {
+                    cubit.onBackPress(context);
+                  },
+                  onBookmarkPress: () {
+                    cubit.onBookmarkPress(item);
+                  },
+                  onMorePress: () {},
+                ),
+              ];
+            },
+            body: DefaultPaddingWidget(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      item.body,
+                      style: getMediumTextStyle(
+                        color: titleTextColor,
+                        fontSize: 20,
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.arrow_back_ios,
-                      color: whiteColor,
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: false,
-                  title: Column(
-                    children: [],
-                  ),
-                  background: Image.asset(
-                    item.image,
-                    fit: BoxFit.cover,
-                  )),
             ),
-          ];
-        },
-        body: Container(),
-      ),
+          ),
+        );
+      },
     );
   }
 }

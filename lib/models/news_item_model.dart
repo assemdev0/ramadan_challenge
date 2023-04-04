@@ -1,4 +1,5 @@
 class NewsItemModel {
+  final int id;
   final String image;
   final String profileImage;
   final String type;
@@ -6,10 +7,14 @@ class NewsItemModel {
   final String name;
   final String date;
   final String source;
+  final String sourceImage;
   final String body;
+  late bool favorite;
 
   NewsItemModel({
+    required this.id,
     required this.source,
+    required this.sourceImage,
     required this.image,
     required this.type,
     required this.title,
@@ -17,5 +22,8 @@ class NewsItemModel {
     required this.date,
     required this.profileImage,
     required this.body,
+    required this.favorite,
   });
+
+  
 }
