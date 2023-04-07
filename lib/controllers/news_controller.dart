@@ -105,6 +105,7 @@ class NewsController with ChangeNotifier {
 
   onSliderIndexChange(int index) {
     currentIndex = index;
+    notifyListeners();
   }
 
   changeFavoriteState(int index) {
