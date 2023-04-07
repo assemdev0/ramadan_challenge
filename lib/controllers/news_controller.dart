@@ -118,7 +118,8 @@ class NewsController with ChangeNotifier {
     required int id,
   }) {
     favoriteList.removeAt(index);
-    changeFavoriteState(index);
+    changeFavoriteState(id);
+    log(favoriteList.length.toString());
     notifyListeners();
   }
 
@@ -129,7 +130,7 @@ class NewsController with ChangeNotifier {
         arguments: itemIndex);
   }
 
-  getFavoriteList() {
+  Future<List<NewsItemModel>> getFavoriteList() async {
     favoriteList.clear();
     for (var element in newsItems) {
       if (element.favorite) {
@@ -137,6 +138,8 @@ class NewsController with ChangeNotifier {
       }
     }
     isLoading = false;
-    notifyListeners();
+    // notifyListeners();
+    return favoriteList;
+    // notifyListeners();
   }
 }

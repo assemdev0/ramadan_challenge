@@ -9,6 +9,7 @@ String get viewAll => 'View all';
 String get sports => 'Sports';
 String get delete => 'Delete';
 String get deleted => 'Deleted';
+String get somethingWentWrong => 'Something went wrong';
 String get cnnIndonesia => 'CNN Indonesia';
 String get hoursAgo => '6 hours ago';
 String get alexanderWearsModifiedHelmetInRoadRaces =>
