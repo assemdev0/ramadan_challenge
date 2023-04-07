@@ -1,19 +1,14 @@
 import 'dart:developer';
 
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import '../models/news_item_model.dart';
+import '../presentation/resources/assets_manager.dart';
+import '../presentation/resources/routes_manager.dart';
+import '../presentation/resources/strings_manager.dart';
 
-import '../../models/news_item_model.dart';
-import '../../presentation/resources/assets_manager.dart';
-import '../../presentation/resources/routes_manager.dart';
-import '../../presentation/resources/strings_manager.dart';
-
-part 'news_state.dart';
-
-class NewsCubit extends Cubit<NewsState> {
-  NewsCubit() : super(NewsInitial());
-
+class NewsController with ChangeNotifier {
   List<NewsItemModel> newsItems = [
     NewsItemModel(
       id: 0,
@@ -101,6 +96,8 @@ class NewsCubit extends Cubit<NewsState> {
   }
 
   bool isLoading = true;
+  // late NewsItemModel item;
+  late int itemNewsItemIndex;
 
   CarouselController carouselController = CarouselController();
 
@@ -110,26 +107,36 @@ class NewsCubit extends Cubit<NewsState> {
     currentIndex = index;
   }
 
-  onBookmarkPress(item) {
-    log(item.id.toString());
-    log(item.favorite.toString());
-    item.favorite = !item.favorite;
-    newsItems[item.id].favorite = !newsItems[item.id].favorite;
+  changeFavoriteState(int index) {
+    log(newsItems[index].favorite.toString());
+    newsItems[index].favorite = !newsItems[index].favorite;
+    notifyListeners();
+  }
+
+  deleteFavoriteItem({
+    required int index,
+    required int id,
+  }) {
+    favoriteList.removeAt(index);
+    changeFavoriteState(index);
+    notifyListeners();
   }
 
   onMorePress() {}
 
-  onNewsItemTap({required BuildContext context, required NewsItemModel item}) {
+  onNewsItemTap({required BuildContext context, required int itemIndex}) {
     Navigator.pushNamed(context, RoutesManager.newsDetailsScreen,
-        arguments: item);
+        arguments: itemIndex);
   }
 
   getFavoriteList() {
+    favoriteList.clear();
     for (var element in newsItems) {
       if (element.favorite) {
         favoriteList.add(element);
       }
     }
     isLoading = false;
+    notifyListeners();
   }
 }

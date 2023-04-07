@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:ramadan_chanllage_1/models/news_item_model.dart';
 
+import '../../controllers/news_controller.dart';
 import '../resources/colors_manager.dart';
 import '../resources/routes_manager.dart';
 import '../resources/strings_manager.dart';
@@ -28,8 +30,10 @@ class HomeSliderWidget extends StatelessWidget {
       itemBuilder: (context, index, realIndex) {
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, RoutesManager.newsDetailsScreen,
-                arguments: items[index]);
+            context.read<NewsController>().onNewsItemTap(
+                  context: context,
+                  itemIndex: items[index].id,
+                );
           },
           child: Card(
             elevation: 10,

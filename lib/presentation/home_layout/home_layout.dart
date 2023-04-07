@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ramadan_chanllage_1/presentation/favorite/favorite_screen.dart';
-import '../resources/styles_manager.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import '../resources/strings_manager.dart';
+import '../favorite/favorite_screen.dart';
+import '../home_screen/home_screen.dart';
 import '../resources/colors_manager.dart';
-import '../homr_screen/home_screen.dart';
+import '../resources/strings_manager.dart';
+import '../resources/styles_manager.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({Key? key}) : super(key: key);
@@ -71,6 +71,12 @@ class _HomeLayoutState extends State<HomeLayout> {
     Container(),
   ];
 
+  void changeBNAVIndex(int index) {
+    setState(() {
+      currentBNAVIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,10 +125,8 @@ class _HomeLayoutState extends State<HomeLayout> {
         unselectedItemColor: disabledColor,
         selectedColorOpacity: 1,
         currentIndex: currentBNAVIndex,
-        onTap: (index) {
-          setState(() {
-            currentBNAVIndex = index;
-          });
+        onTap: (int index) {
+          changeBNAVIndex(index);
         },
       ),
       body: screens[currentBNAVIndex],

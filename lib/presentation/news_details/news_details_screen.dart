@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:ramadan_chanllage_1/controllers/news_controller.dart';
 import 'package:ramadan_chanllage_1/models/news_item_model.dart';
 
-import '../../cubit/news_cubit/news_cubit.dart';
 import '../resources/colors_manager.dart';
 import '../resources/styles_manager.dart';
 import '../widgets/default_padding_widget.dart';
@@ -15,23 +13,25 @@ class NewsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NewsItemModel item =
-        ModalRoute.of(context)!.settings.arguments as NewsItemModel;
-    var cubit = BlocProvider.of<NewsCubit>(context);
-    return BlocBuilder<NewsCubit, NewsState>(
-      bloc: NewsCubit(),
-      builder: (context, state) {
+    context.read<NewsController>().itemNewsItemIndex =
+        ModalRoute.of(context)!.settings.arguments as int;
+    return Consumer<NewsController>(
+      builder:
+          (BuildContext context, NewsController controller, Widget? child) {
         return Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBarWidget(
-                  item: item,
+                  item: context.read<NewsController>().newsItems[
+                      context.read<NewsController>().itemNewsItemIndex],
                   onBackPress: () {
-                    cubit.onBackPress(context);
+                    controller.onBackPress(context);
                   },
                   onBookmarkPress: () {
-                    cubit.onBookmarkPress(item);
+                    controller.changeFavoriteState(
+                      context.read<NewsController>().itemNewsItemIndex,
+                    );
                   },
                   onMorePress: () {},
                 ),
@@ -45,7 +45,11 @@ class NewsDetailsScreen extends StatelessWidget {
                       height: 30,
                     ),
                     Text(
-                      item.body,
+                      context
+                          .read<NewsController>()
+                          .newsItems[
+                              context.read<NewsController>().itemNewsItemIndex]
+                          .body,
                       style: getMediumTextStyle(
                         color: titleTextColor,
                         fontSize: 20,
