@@ -2,6 +2,12 @@
 
 This project for a ramadan Flutter Challenge, created by Eng. Tarek Alabd, to creating news app.
 
+# App Video
+
+https://user-images.githubusercontent.com/112192993/230690690-5936686a-0643-409d-8609-c30774d83b6f.mp4
+
+
+
 ## Home Screen
 ![WhatsApp Image 2023-03-29 at 11 16 03 PM](https://user-images.githubusercontent.com/112192993/228669624-8181c061-c1f3-4add-ba1f-547b655d8b68.jpeg)
 
