@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ramadan_chanllage_1/data/remote/api_services.dart';
 import '../models/news_item_model.dart';
 import '../presentation/resources/assets_manager.dart';
 import '../presentation/resources/routes_manager.dart';
 import '../presentation/resources/strings_manager.dart';
 
 class NewsController with ChangeNotifier {
+  var testt = ApiServices.instance;
   List<NewsItemModel> newsItems = [
     NewsItemModel(
       id: 0,
