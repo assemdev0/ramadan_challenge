@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ramadan_chanllage_1/presentation/resources/assets_manager.dart';
 
 import '../resources/colors_manager.dart';
 import '../resources/font_manager.dart';
@@ -15,7 +16,7 @@ class HomeNewsListItemBuilderWidget extends StatelessWidget {
       required this.date,
       required this.onTap})
       : super(key: key);
-  final String image;
+  final String? image;
   final String type;
   final String title;
   final String profileImage;
@@ -38,7 +39,9 @@ class HomeNewsListItemBuilderWidget extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                image: AssetImage(image),
+                image: image == null
+                    ? const AssetImage(ImageAssets.noImage)
+                    : NetworkImage(image!) as ImageProvider,
                 fit: BoxFit.cover,
               ),
             ),
@@ -91,10 +94,13 @@ class HomeNewsListItemBuilderWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                    Text(
-                      date,
-                      style: getMediumTextStyle(
-                        color: disabledTextColor,
+                    Expanded(
+                      child: Text(
+                        date,
+                        style: getMediumTextStyle(
+                          color: disabledTextColor,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

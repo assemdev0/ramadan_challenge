@@ -38,16 +38,19 @@ class Articles {
   String? urlToImage;
   String? publishedAt;
   String? content;
+  bool? favorite;
 
-  Articles(
-      {this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+  Articles({
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+    this.favorite = false,
+  });
 
   Articles.fromJson(Map<String, dynamic> json) {
     source = json['source'] != null ? Source.fromJson(json['source']) : null;

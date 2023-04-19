@@ -30,7 +30,7 @@ class _HomeLayoutState extends State<HomeLayout> {
       ),
     ),
     SalomonBottomBarItem(
-      title: Text(network, style: getMediumTextStyle(color: whiteColor)),
+      title: Text(discover, style: getMediumTextStyle(color: whiteColor)),
       icon: Icon(
         Icons.language,
         color: disabledIconColor,

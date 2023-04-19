@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dismissible_tile/flutter_dismissible_tile.dart';
 import 'package:provider/provider.dart';
 import 'package:ramadan_chanllage_1/controllers/news_controller.dart';
+import 'package:ramadan_chanllage_1/presentation/resources/assets_manager.dart';
 
 import 'package:ramadan_chanllage_1/presentation/resources/styles_manager.dart';
 
-import '../../models/news_item_model.dart';
 import '../resources/colors_manager.dart';
 import '../resources/strings_manager.dart';
 import '../widgets/home_news_list_item_builder_widget.dart';
@@ -51,13 +51,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               padding: const EdgeInsets.all(20),
               itemBuilder: (BuildContext context, int index) {
                 return DismissibleTile(
-                  key: Key(
-                    context
-                        .read<NewsController>()
-                        .favoriteList[index]
-                        .id
-                        .toString(),
-                  ),
+                  key: Key(context
+                      .read<NewsController>()
+                      .favoriteList[index]
+                      .id!
+                      .toString()),
                   direction: DismissibleTileDirection.horizontal,
                   onDismissed: (direction) {
                     context.read<NewsController>().deleteFavoriteItem(
@@ -65,9 +63,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           id: context
                               .read<NewsController>()
                               .favoriteList[index]
-                              .id,
+                              .id!,
                         );
                   },
+                  onDismissConfirmed: () =>
+                      context.read<NewsController>().getFavoriteList(),
                   borderRadius: const BorderRadius.all(Radius.circular(16)),
                   delayBeforeResize: const Duration(milliseconds: 500),
                   ltrDismissedColor: errorRedColor,
@@ -82,28 +82,27 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     image: context
                         .read<NewsController>()
                         .favoriteList[index]
-                        .image,
-                    profileImage: context
+                        .urlToImage,
+                    profileImage: ImageAssets.imagesMcKidney,
+                    type: context
                         .read<NewsController>()
                         .favoriteList[index]
-                        .profileImage,
-                    type:
-                        context.read<NewsController>().favoriteList[index].type,
+                        .author!,
                     title: context
                         .read<NewsController>()
                         .favoriteList[index]
-                        .title,
-                    name:
-                        context.read<NewsController>().favoriteList[index].name,
-                    date:
-                        context.read<NewsController>().favoriteList[index].date,
+                        .title!,
+                    name: mcKidney,
+                    date: context
+                        .read<NewsController>()
+                        .favoriteList[index]
+                        .publishedAt!,
                     onTap: () {
                       context.read<NewsController>().onNewsItemTap(
                             context: context,
-                            itemIndex: context
+                            item: context
                                 .read<NewsController>()
-                                .favoriteList[index]
-                                .id,
+                                .favoriteList[index],
                           );
                     },
                   ),

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/models/news_item_model.dart';
+import 'package:ramadan_chanllage_1/presentation/resources/assets_manager.dart';
+import '/models/top_headlines_model/top_headlines_success_model.dart';
 
 import '../resources/colors_manager.dart';
 import '../resources/strings_manager.dart';
@@ -18,7 +19,7 @@ class SliverAppBarWidget extends StatelessWidget {
       required this.onBookmarkPress,
       required this.onMorePress});
 
-  final NewsItemModel item;
+  final Articles item;
   final Function onBackPress;
   final Function onBookmarkPress;
   final Function onMorePress;
@@ -44,7 +45,7 @@ class SliverAppBarWidget extends StatelessWidget {
       leadingWidth: MediaQuery.of(context).size.width * 0.2,
       actions: [
         BluredIconWidget(
-          icon: item.favorite
+          icon: item.favorite ?? false
               ? CupertinoIcons.bookmark_solid
               : CupertinoIcons.bookmark,
           onPressed: () {
@@ -70,11 +71,17 @@ class SliverAppBarWidget extends StatelessWidget {
         background: Stack(
           children: [
             Positioned.fill(
-              child: Image.asset(
-                item.image,
-                fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height,
-              ),
+              child: item.urlToImage == null
+                  ? Image.asset(
+                      ImageAssets.noImage,
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height,
+                    )
+                  : Image.network(
+                      item.urlToImage!,
+                      fit: BoxFit.cover,
+                      height: MediaQuery.of(context).size.height,
+                    ),
             ),
             Positioned(
               bottom: MediaQuery.of(context).size.height * 0.12,
@@ -93,7 +100,7 @@ class SliverAppBarWidget extends StatelessWidget {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      item.type,
+                      item.author ?? 'Unknown',
                       style: getMediumTextStyle(
                         color: whiteColor,
                       ),
@@ -104,7 +111,7 @@ class SliverAppBarWidget extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    item.title,
+                    item.title!,
                     style:
                         getSemiBoldTextStyle(color: whiteColor, fontSize: 28),
                   ),
@@ -122,7 +129,7 @@ class SliverAppBarWidget extends StatelessWidget {
                       const DotWidget(),
                       const SizedBox(width: 10),
                       Text(
-                        item.date,
+                        item.publishedAt!,
                         style: getRegularTextStyle(
                             color: whiteColor, fontSize: 16),
                       ),
@@ -153,15 +160,15 @@ class SliverAppBarWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   textBaseline: TextBaseline.alphabetic,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 25,
-                      backgroundImage: AssetImage(item.sourceImage),
+                      backgroundImage: AssetImage(ImageAssets.imageCNN),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      item.source,
+                      item.source!.name!,
                       style: getBoldTextStyle(color: titleTextColor),
                     ),
                     const SizedBox(

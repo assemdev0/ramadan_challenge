@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ramadan_chanllage_1/models/news_item_model.dart';
+import 'package:ramadan_chanllage_1/presentation/resources/assets_manager.dart';
+import '/models/top_headlines_model/top_headlines_success_model.dart';
 
 import '../../controllers/news_controller.dart';
 import '../resources/colors_manager.dart';
-import '../resources/routes_manager.dart';
-import '../resources/strings_manager.dart';
+
 import '../resources/styles_manager.dart';
 import 'dot_wudget.dart';
 import 'verified_widget.dart';
@@ -20,7 +20,7 @@ class HomeSliderWidget extends StatelessWidget {
   }) : super(key: key);
   final CarouselController carouselController;
   final Function(int) onIndexChanged;
-  final List<NewsItemModel> items;
+  final List<Articles> items;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class HomeSliderWidget extends StatelessWidget {
           onTap: () {
             context.read<NewsController>().onNewsItemTap(
                   context: context,
-                  itemIndex: items[index].id,
+                  item: items[index],
                 );
           },
           child: Card(
@@ -47,9 +47,13 @@ class HomeSliderWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 image: DecorationImage(
                   isAntiAlias: true,
-                  image: AssetImage(
-                    items[index].image,
-                  ),
+                  image: items[index].urlToImage == null
+                      ? const AssetImage(
+                          ImageAssets.noImage,
+                        )
+                      : NetworkImage(
+                          items[index].urlToImage,
+                        ) as ImageProvider,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,11 +72,13 @@ class HomeSliderWidget extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        items[index].type,
+                        items[index].author!,
                         style: getMediumTextStyle(
                           color: whiteColor,
                         ),
                         textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Spacer(),
@@ -80,7 +86,7 @@ class HomeSliderWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          items[index].source,
+                          items[index].source!.name!,
                           style: getMediumTextStyle(
                             color: whiteColor,
                           ),
@@ -95,7 +101,7 @@ class HomeSliderWidget extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.02,
                         ),
                         Text(
-                          items[index].date,
+                          items[index].publishedAt!,
                           style: getMediumTextStyle(
                             color: whiteColor,
                           ),
@@ -106,10 +112,12 @@ class HomeSliderWidget extends StatelessWidget {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     Text(
-                      items[index].title,
+                      items[index].title!,
                       style: getSemiBoldTextStyle(
                         color: whiteColor,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

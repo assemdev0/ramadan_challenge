@@ -38,16 +38,21 @@ class Articles {
   var urlToImage;
   String? publishedAt;
   var content;
+  bool? favorite;
+  int? id;
+  static int count = 0;
 
-  Articles(
-      {this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+  Articles({
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+    this.favorite = false,
+  });
 
   Articles.fromJson(Map<String, dynamic> json) {
     source = json['source'] != null ? Source.fromJson(json['source']) : null;
@@ -58,6 +63,8 @@ class Articles {
     urlToImage = json['urlToImage'];
     publishedAt = json['publishedAt'];
     content = json['content'];
+    id = count++;
+    favorite = false;
   }
 
   Map<String, dynamic> toJson() {

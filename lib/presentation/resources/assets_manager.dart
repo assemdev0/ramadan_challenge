@@ -7,4 +7,5 @@ class ImageAssets {
   static const String imagesSecondrySchool = '$imagePath/secondrySchool.jpg';
   static const String imagesVolleyball = '$imagePath/volleyball.jpg';
   static const String imageCNN = '$imagePath/cnn.png';
+  static const String noImage = '$imagePath/no_image.jpg';
 }

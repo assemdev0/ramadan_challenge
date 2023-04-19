@@ -1,7 +1,7 @@
 String get appName => 'News App';
 String get fontFamily => 'Tajawal';
 String get home => 'Home';
-String get network => 'Network';
+String get discover => 'Discover';
 String get favorite => 'Favorite';
 String get profile => 'Profile';
 String get breakingNews => 'Breaking News';

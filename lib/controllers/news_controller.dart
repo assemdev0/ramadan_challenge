@@ -3,103 +3,23 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ramadan_chanllage_1/data/remote/api_services.dart';
-import '../models/news_item_model.dart';
-import '../presentation/resources/assets_manager.dart';
+import 'package:ramadan_chanllage_1/models/top_headlines_model/top_headlines_success_model.dart';
+import '../models/top_headlines_model/top_headlines_error_model.dart';
+import '../models/top_headlines_model/top_headlines_model.dart';
 import '../presentation/resources/routes_manager.dart';
-import '../presentation/resources/strings_manager.dart';
+import '../repository/repo.dart';
 
 class NewsController with ChangeNotifier {
-  var testt = ApiServices.instance;
-  List<NewsItemModel> newsItems = [
-    NewsItemModel(
-      id: 0,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesVolleyball,
-      profileImage: ImageAssets.imagesMcKidney,
-      type: sports,
-      title: whatTrainingDoVolleyballPlayersNeed,
-      name: mcKidney,
-      date: feb27_20_23,
-      body: bodyString,
-      favorite: false,
-    ),
-    NewsItemModel(
-      id: 1,
-      favorite: false,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesSecondrySchool,
-      profileImage: ImageAssets.imagesRosemary,
-      type: education,
-      title: secondarySchoolPlacesWhenDoParentsFindOut,
-      name: rosemary,
-      date: feb28_2023,
-      body: bodyString,
-    ),
-    NewsItemModel(
-      id: 2,
-      favorite: false,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesVolleyball,
-      profileImage: ImageAssets.imagesMcKidney,
-      type: sports,
-      title: whatTrainingDoVolleyballPlayersNeed,
-      name: mcKidney,
-      date: feb27_20_23,
-      body: bodyString,
-    ),
-    NewsItemModel(
-      id: 3,
-      favorite: false,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesSecondrySchool,
-      profileImage: ImageAssets.imagesRosemary,
-      type: education,
-      title: secondarySchoolPlacesWhenDoParentsFindOut,
-      name: rosemary,
-      date: feb28_2023,
-      body: bodyString,
-    ),
-    NewsItemModel(
-      id: 4,
-      favorite: false,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesVolleyball,
-      profileImage: ImageAssets.imagesMcKidney,
-      type: sports,
-      title: whatTrainingDoVolleyballPlayersNeed,
-      name: mcKidney,
-      date: feb27_20_23,
-      body: bodyString,
-    ),
-    NewsItemModel(
-      id: 5,
-      favorite: false,
-      sourceImage: ImageAssets.imageCNN,
-      source: cnnIndonesia,
-      image: ImageAssets.imagesSecondrySchool,
-      profileImage: ImageAssets.imagesRosemary,
-      type: education,
-      title: secondarySchoolPlacesWhenDoParentsFindOut,
-      name: rosemary,
-      date: feb28_2023,
-      body: bodyString,
-    ),
-  ];
-
-  List<NewsItemModel> favoriteList = [];
-  onBackPress(BuildContext context) {
-    Navigator.pop(context);
-  }
-
+  TopHeadlinesSuccessModel? newsSuccessModel;
+  TopHeadlinesErrorModel? newsErrorModel;
   bool isLoading = true;
-  // late NewsItemModel item;
-  late int itemNewsItemIndex;
+  late Articles itemNewsItem;
+  int onProgrees = 0;
+
+  onProgreesChange(int progress) {
+    onProgrees = progress;
+    notifyListeners();
+  }
 
   CarouselController carouselController = CarouselController();
 
@@ -111,9 +31,15 @@ class NewsController with ChangeNotifier {
   }
 
   changeFavoriteState(int index) {
-    log(newsItems[index].favorite.toString());
-    newsItems[index].favorite = !newsItems[index].favorite;
+    log(newsSuccessModel!.articles![index].favorite.toString());
+    newsSuccessModel!.articles![index].favorite =
+        !newsSuccessModel!.articles![index].favorite!;
     notifyListeners();
+  }
+
+  List<Articles> favoriteList = [];
+  onBackPress(BuildContext context) {
+    Navigator.pop(context);
   }
 
   deleteFavoriteItem({
@@ -128,21 +54,39 @@ class NewsController with ChangeNotifier {
 
   onMorePress() {}
 
-  onNewsItemTap({required BuildContext context, required int itemIndex}) {
+  onNewsItemTap({
+    required BuildContext context,
+    required Articles item,
+  }) {
     Navigator.pushNamed(context, RoutesManager.newsDetailsScreen,
-        arguments: itemIndex);
+        arguments: item);
   }
 
-  Future<List<NewsItemModel>> getFavoriteList() async {
+  getNewsList() async {
+    if (newsSuccessModel == null) {
+      Articles.count = 0;
+      TopHeadlinesModel newsModel =
+          await Repository.instance.featchCategoryNews();
+      if (newsModel is TopHeadlinesSuccessModel) {
+        newsSuccessModel = newsModel;
+        log(newsSuccessModel!.articles!.first.id.toString());
+        log(newsSuccessModel!.articles!.last.id.toString());
+      } else if (newsModel is TopHeadlinesErrorModel) {
+        newsErrorModel = newsModel;
+      }
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<List<Articles>> getFavoriteList() async {
     favoriteList.clear();
-    for (var element in newsItems) {
-      if (element.favorite) {
+    for (var element in newsSuccessModel!.articles!) {
+      if (element.favorite!) {
         favoriteList.add(element);
       }
     }
     isLoading = false;
-    // notifyListeners();
     return favoriteList;
-    // notifyListeners();
   }
 }

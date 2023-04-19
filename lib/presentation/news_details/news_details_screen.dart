@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ramadan_chanllage_1/controllers/news_controller.dart';
-import 'package:ramadan_chanllage_1/models/news_item_model.dart';
+import 'package:ramadan_chanllage_1/models/top_headlines_model/top_headlines_success_model.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../resources/colors_manager.dart';
 import '../resources/styles_manager.dart';
@@ -13,8 +14,8 @@ class NewsDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<NewsController>().itemNewsItemIndex =
-        ModalRoute.of(context)!.settings.arguments as int;
+    context.read<NewsController>().itemNewsItem =
+        ModalRoute.of(context)!.settings.arguments as Articles;
     return Consumer<NewsController>(
       builder:
           (BuildContext context, NewsController controller, Widget? child) {
@@ -23,14 +24,13 @@ class NewsDetailsScreen extends StatelessWidget {
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBarWidget(
-                  item: context.read<NewsController>().newsItems[
-                      context.read<NewsController>().itemNewsItemIndex],
+                  item: context.read<NewsController>().itemNewsItem,
                   onBackPress: () {
                     controller.onBackPress(context);
                   },
                   onBookmarkPress: () {
                     controller.changeFavoriteState(
-                      context.read<NewsController>().itemNewsItemIndex,
+                      context.read<NewsController>().itemNewsItem.id!,
                     );
                   },
                   onMorePress: () {},
@@ -38,28 +38,32 @@ class NewsDetailsScreen extends StatelessWidget {
               ];
             },
             body: DefaultPaddingWidget(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      context
-                          .read<NewsController>()
-                          .newsItems[
-                              context.read<NewsController>().itemNewsItemIndex]
-                          .body,
-                      style: getMediumTextStyle(
-                        color: titleTextColor,
-                        fontSize: 20,
+              child: Column(
+                children: [
+                  if (controller.onProgrees != 100)
+                    LinearProgressIndicator(
+                      value: controller.onProgrees / 100,
+                      backgroundColor: whiteColor,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        primaryColor,
                       ),
                     ),
-                    const SizedBox(
-                      height: 30,
+                  Expanded(
+                    flex: 1,
+                    child: WebView(
+                      // controller: context.read<NewsController>().controller,
+                      initialUrl:
+                          context.read<NewsController>().itemNewsItem.url!,
+                      onProgress: (progress) {
+                        controller.onProgreesChange(progress);
+                      },
+                      allowsInlineMediaPlayback: true,
+
+                      javascriptMode: JavascriptMode.unrestricted,
+                      zoomEnabled: true,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
